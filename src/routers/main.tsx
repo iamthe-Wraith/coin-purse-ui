@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router';
-import { ComingSoon } from '../pages/ComingSoon';
+import { ComingSoon } from '../screens/ComingSoon';
 import { MainRoutes } from './config';
 
 export const MainRouter = () => {

@@ -16,8 +16,8 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "strictNullChecks": false,
-    "types": ["node"]
+    "types": ["cypress", "node", "vitest/globals"]
   },
-  "include": ["src"],
+  "include": ["src", "cypress"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
