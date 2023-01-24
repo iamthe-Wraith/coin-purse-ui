@@ -17,6 +17,7 @@ module.exports = {
   root: true,
   rules: {
     '@typescript-eslint/indent': ['error', 2],
+    '@typescript-eslint/no-empty-interface': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-floating-promises': 'off',
     '@typescript-eslint/no-misused-promises': 'off',

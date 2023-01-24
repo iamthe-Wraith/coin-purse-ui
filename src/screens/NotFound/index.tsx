@@ -1,9 +1,11 @@
 import React from 'react';
-import { NotFoundContainer } from './styles';
+import styled from 'styled-components';
+import { IBaseProps } from '../../types/fc';
+import { Screen } from '../Screen';
 
-interface IProps {
-  className?: string;
-}
+interface IProps extends IBaseProps {}
+
+const NotFoundContainer = styled(Screen)``;
 
 export const NotFound: React.FC<IProps> = ({
   className = '',
