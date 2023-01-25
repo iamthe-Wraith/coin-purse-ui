@@ -1,21 +1,28 @@
 import React from 'react';
 import styled from 'styled-components';
 import { theme } from '../../styles/theme';
+import { ThemeType } from '../../types';
 import { IBaseProps } from '../../types/fc';
 
-type CardType = 'primary' | 'secondary' | 'tertiary';
-
 interface ICardStyleProps {
-  type?: CardType;
+  type?: Exclude<ThemeType, 'neutral'>;
 }
 
 interface IProps extends IBaseProps, ICardStyleProps {}
 
 const CardContainer = styled.div<ICardStyleProps>`
+  padding: 10px;
+  border-radius: 8px;
+  border-style: solid;
+  border-width: 1px;
+
   ${({ type }) => {
     let color: string;
 
     switch (type) {
+      case 'primary':
+        color = theme.colors.primary[400];
+        break;
       case 'secondary': 
         color = theme.colors.secondary[400];
         break;
@@ -23,11 +30,13 @@ const CardContainer = styled.div<ICardStyleProps>`
         color = theme.colors.secondary[400];
         break;
       default:
-        color = theme.colors.primary[400];
+        color = 'transparent';
         break;
     }
 
-    return `border: 1px solid ${color}`;
+    if (!color) return '';
+
+    return `border-color: ${color}`;
   }}
 `;
 
