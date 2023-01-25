@@ -24,13 +24,16 @@ const StyledInput = styled.input`
   font-size: 1.1rem;
   background: ${theme.colors.neutral[600]};
   box-shadow: inset 0 0 0 0 ${theme.colors.neutral[800]};
-  border: 1px solid ${theme.colors.neutral[400]};
+  border-width: 1px;
+  border-right-width: 4px;
+  border-style: solid;
+  border-color: ${theme.colors.neutral[400]};
   border-radius: 4px;
   outline: none;
 
   &:focus,
   &:focus-within {
-    border: 1px solid ${theme.colors.primary[400]};
+    border-color: ${theme.colors.primary[400]};
   }
 
   &:hover {
