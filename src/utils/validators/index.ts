@@ -8,8 +8,8 @@ interface IValidationResponse {
 export const validateEmail = (email: string, required?: boolean): IValidationResponse => {
   let error = '';
 
-  if (required && !email.trim()) error = 'Email is required.';
-  if (!error && !isEmail(email)) error = 'Invalid email format.';
+  if (required && !email?.trim()) error = 'Email is required.';
+  if (!error && !!email?.trim() && !isEmail(email)) error = 'Invalid email format.';
 
   return {
     isValid: !error,
