@@ -11,7 +11,7 @@ interface ICardStyleProps {
 interface IProps extends IBaseProps, ICardStyleProps {}
 
 const CardContainer = styled.div<ICardStyleProps>`
-  padding: 10px;
+  padding: 12px;
   border-radius: 8px;
   border-style: solid;
   border-width: 1px;
@@ -27,7 +27,7 @@ const CardContainer = styled.div<ICardStyleProps>`
         color = theme.colors.secondary[400];
         break;
       case 'tertiary': 
-        color = theme.colors.secondary[400];
+        color = theme.colors.tertiary[400];
         break;
       default:
         color = 'transparent';
