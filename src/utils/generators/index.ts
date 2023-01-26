@@ -5,7 +5,7 @@ type Alphabet = 'alpha' | 'numeric' | 'alphanumeric';
 const alphaChars = 'abcdefghijklmnopqrstuvwxyz';
 const numericChars = '1234567890';
 
-export const generateId = ({ alphabet, count }: { alphabet?: Alphabet, count?: number }) => {
+export const generateId = ({ alphabet, count }: { alphabet?: Alphabet, count?: number } = {}) => {
   const _count = count || 16;
   let _alphabet: string;
 
