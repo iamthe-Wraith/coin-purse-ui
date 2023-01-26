@@ -16,7 +16,7 @@ describe('Button', () => {
       .should('have.css', 'font-size', '17.6px')
       .invoke('css', 'color')
       .then(clr => {
-        expect(tinycolor(clr.toString()).toHexString().toUpperCase()).to.equal(theme.colors.neutral[100]);
+        cy.wrap(tinycolor(clr.toString()).toHexString().toUpperCase()).should('equal', theme.colors.neutral[100]);
       });
   });
 
@@ -27,7 +27,7 @@ describe('Button', () => {
 
     cy.get(btn).click({ force: true })
       .then(() => {
-        expect(onClickSpy).to.be.called;
+        cy.wrap(onClickSpy).should('be.called');
       });
   });
 
@@ -46,7 +46,7 @@ describe('Button', () => {
 
     cy.get(btn).click({ force: true })
       .then(() => {
-        expect(onClickSpy).to.not.be.called;
+        cy.wrap(onClickSpy).should('not.be.called');
       });
   });
 });

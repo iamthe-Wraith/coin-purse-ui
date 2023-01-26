@@ -31,7 +31,7 @@ describe('Card', () => {
       cy.get(card)
         .invoke('css', 'border-color')
         .then(clr => {
-          expect(tinycolor(clr.toString()).toHexString().toUpperCase()).to.equal(theme.colors.primary[400].toUpperCase());
+          cy.wrap(tinycolor(clr.toString()).toHexString().toUpperCase()).should('equal', theme.colors.primary[400].toUpperCase());
         });
     });
   });
@@ -51,7 +51,7 @@ describe('Card', () => {
       cy.get(card)
         .invoke('css', 'border-color')
         .then(clr => {
-          expect(tinycolor(clr.toString()).toHexString().toUpperCase()).to.equal(theme.colors.secondary[400].toUpperCase());
+          cy.wrap(tinycolor(clr.toString()).toHexString().toUpperCase()).should('equal', theme.colors.secondary[400].toUpperCase());
         });
     });
   });
@@ -71,7 +71,7 @@ describe('Card', () => {
       cy.get(card)
         .invoke('css', 'border-color')
         .then(clr => {
-          expect(tinycolor(clr.toString()).toHexString().toUpperCase()).to.equal(theme.colors.tertiary[400].toUpperCase());
+          cy.wrap(tinycolor(clr.toString()).toHexString().toUpperCase()).should('equal', theme.colors.tertiary[400].toUpperCase());
         });
     });
   });
@@ -91,7 +91,7 @@ describe('Card', () => {
       cy.get(card)
         .invoke('css', 'border-color')
         .then(clr => {
-          expect(tinycolor(clr.toString()).toHex8String().toUpperCase()).to.equal('#00000000');
+          cy.wrap(tinycolor(clr.toString()).toHex8String().toUpperCase()).should('equal', '#00000000');
         });
     });
   });
