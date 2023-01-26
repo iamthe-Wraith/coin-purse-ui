@@ -7,7 +7,7 @@ import { theme } from '../../styles/theme';
 const card = '[data-cy=card]';
 
 describe('Card', () => {
-  const text = 'Testing Button';
+  const text = 'Testing Card';
 
   it('should contain any children passed to it', () => {
     cy.mount(<Card dataCy='card'>{ text }</Card>);
