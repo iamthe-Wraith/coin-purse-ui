@@ -115,7 +115,7 @@ const ButtonSpinner = styled(Spinner)`
 
 export const Button: React.FC<IProps> = ({
   children,
-  dataCy = '',
+  dataCy = 'button',
   processing,
   ...restProps
 }) => {

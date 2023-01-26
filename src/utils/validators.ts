@@ -20,12 +20,12 @@ export const validateEmail = (email: string, required?: boolean): IValidationRes
 export const validatePassword = (password: string): IValidationResponse => {
   let error = '';
 
-  // TODO: add check for uppercase letter
-  // TODO: add check for lowercase letter
-  // TODO: add check for number
-  // TOOD: add check for special char
-  if (password.length < 8) {
-    error = 'Passwords must be at least 8 characters long and container at least 1x capital letter, 1x lowercase letter, 1x number, and 1x of the following special characters: !@#$%^&*()';
+  if (password.length < 8 ||
+    !password.match(/\d/) ||
+    !password.match(/[!@#$%^&*()-_]/) ||
+    !password.match(/[A-Z]/) ||
+    !password.match(/[a-z]/)) {
+    error = 'Passwords must be at least 8 characters long and container at least 1x capital letter, 1x lowercase letter, 1x number, and 1x of the following special characters: !@#$%^&*()-_';
   }
 
   return {
