@@ -1,4 +1,4 @@
-import * as ComingSoon from '../../src/components/ComingSoonMessaging/cy-selectors';
+import * as ComingSoon from '../../src/components/ComingSoonMessaging/coming-soon-selectors';
 
 describe('Coming Soon Screen', () => {
   beforeEach(() => {

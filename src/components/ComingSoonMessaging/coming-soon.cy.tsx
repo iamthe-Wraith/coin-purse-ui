@@ -1,6 +1,6 @@
 import '../../../workaround-cypress-process-issue';
 import { ComingSoonMessaging } from '.';
-import * as ComingSoon from './cy-selectors';
+import * as ComingSoon from './coming-soon-selectors';
 
 describe('ComingSoonMessaging', () => {
   it('should mount', () => {

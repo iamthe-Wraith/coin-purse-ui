@@ -58,7 +58,7 @@ const StyledText = styled.p`
 
 export const InputField: React.FC<IProps> = ({
   className,
-  dataCy,
+  dataCy = 'input-field',
   error,
   id,
   inputProps = {},
@@ -74,19 +74,19 @@ export const InputField: React.FC<IProps> = ({
 
   const renderError = () => {
     if (!error) return null;
-    return <ErrorText>{ error }</ErrorText>;
+    return <ErrorText dataCy={ `${dataCy}-error` }>{ error }</ErrorText>;
   };
 
   const renderLabel = () => {
     if (!label) return null;
     if (typeof label !== 'string') return label;
-    return <StyledLabel htmlFor={ _id }>{ label }</StyledLabel>;
+    return <StyledLabel htmlFor={ _id } data-cy={ `${dataCy}-label` }>{ label }</StyledLabel>;
   };
 
   const renderText = () => {
     if (!text) return null;
     if (typeof text !== 'string') return text;
-    return <StyledText>{ text }</StyledText>;
+    return <StyledText data-cy={ `${dataCy}-text` }>{ text }</StyledText>;
   };
 
   return (
@@ -98,6 +98,7 @@ export const InputField: React.FC<IProps> = ({
       { renderText() }
       <StyledInput
         { ...inputProps }
+        data-cy={ `${dataCy}-input` }
         id={ _id }
       />
       { renderError() }
