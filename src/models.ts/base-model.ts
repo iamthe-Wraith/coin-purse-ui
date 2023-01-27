@@ -4,10 +4,10 @@ import { ApiError } from '../utils/api-error';
 
 type PrivateFields = '_apiBaseUrl'
 | '_authToken'
+| '_busy' 
 | '_client'
 | '_headers' 
 | '_initClient' 
-| '_loading' 
 | '_setAuthToken';
 
 interface IRequestConfig {
@@ -30,7 +30,7 @@ export class BaseModel {
   private _authToken = '';
   private _client: AxiosInstance = null;
   private _headers: any = {};
-  private _loading = false;
+  private _busy = false;
 
   constructor() {
     makeObservable<this, PrivateFields>(this, {
@@ -38,8 +38,8 @@ export class BaseModel {
       _authToken: observable,
       _client: observable.ref,
       _headers: observable,
-      _loading: observable,
-      loading: computed,
+      _busy: observable,
+      busy: computed,
       _initClient: action,
       _setAuthToken: action,
       sendRequest: action,
@@ -55,7 +55,7 @@ export class BaseModel {
     this._initClient();
   }
 
-  get loading() { return this._loading; }
+  get busy() { return this._busy; }
 
   buildV1Path = (path: string) => {
     const includeSlash = path[0] !== '/';
@@ -70,7 +70,7 @@ export class BaseModel {
       };
     }
 
-    this._loading = true;
+    this._busy = true;
 
     if (!this._authToken && !tokenOptional) this._setAuthToken();
 
@@ -85,7 +85,7 @@ export class BaseModel {
       });
 
       runInAction(() => {
-        this._loading = false;
+        this._busy = false;
       });
 
       if (response?.status >= 200 && response?.status < 300) {
@@ -101,7 +101,7 @@ export class BaseModel {
       };
     } catch (error: any) {
       runInAction(() => {
-        this._loading = false;
+        this._busy = false;
       });
       
       const { message, field } = (error.response?.data || {});

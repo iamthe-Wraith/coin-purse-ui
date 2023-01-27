@@ -28,7 +28,7 @@ export class UserSession extends BaseModel {
   get isLoggedIn() { return !!this._user?.id; }
 
   authenticate = async () => {
-    if (this.loading) return;
+    if (this.busy) return;
 
     const result = await this.sendRequest<IAuthResponse>({
       method: 'POST',
@@ -45,7 +45,7 @@ export class UserSession extends BaseModel {
   };
 
   login = async (email: string, password: string) => {
-    if (this.loading) return;
+    if (this.busy) return;
 
     const result = await this.sendRequest<IAuthResponse>({
       data: { email, password },
@@ -63,7 +63,7 @@ export class UserSession extends BaseModel {
   };
 
   logout = async () => {
-    if (this.loading) return;
+    if (this.busy) return;
 
     const result = await this.sendRequest<IAuthResponse>({
       method: 'POST',
@@ -80,7 +80,7 @@ export class UserSession extends BaseModel {
   };
 
   signup = async (email: string, password: string) => {
-    if (this.loading) return;
+    if (this.busy) return;
 
     const result = await this.sendRequest<IAuthResponse>({
       data: { email, password },

@@ -1,5 +1,5 @@
 export enum MainRoutes {
-  DASHBOARD = '/',
+  DASHBOARD = '/dashboard',
   LOGIN = '/login',
   SIGNUP = '/signup',
 }
