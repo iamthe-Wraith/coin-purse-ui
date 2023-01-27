@@ -14,9 +14,10 @@ const ScreenContainer = styled.div`
 export const Screen: React.FC<IProps> = ({
   children,
   className,
+  dataCy,
 }) => {
   return (
-    <ScreenContainer className={ className }>
+    <ScreenContainer className={ className } data-cy={ dataCy }>
       { children }
     </ScreenContainer>
   );

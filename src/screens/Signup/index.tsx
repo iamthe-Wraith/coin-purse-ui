@@ -9,6 +9,8 @@ import { IBaseProps } from '../../types/fc';
 import { validateEmail, validatePassword } from '../../utils/validators';
 import { Screen } from '../Screen';
 
+const dataCy = 'signup';
+
 interface IProps extends IBaseProps {}
 
 interface IFieldValue {
@@ -98,7 +100,7 @@ export const Signup: React.FC<IProps> = ({
   }, [email, password, passwordConfirm]);
 
   return (
-    <SignupContainer className={ className }>
+    <SignupContainer className={ `${className} signup-screen` } dataCy={ dataCy }>
       <SignupFormContainer>
         <H1>Sign Up for Coin Purse</H1>
         <SignupForm>
@@ -110,6 +112,7 @@ export const Signup: React.FC<IProps> = ({
               value: email.value,
             } }
             label='Email'
+            dataCy={ `${dataCy}-email` }
           />
           <SignupFieldContainer
             error={ password.error }
@@ -120,6 +123,7 @@ export const Signup: React.FC<IProps> = ({
               value: password.value,
             } }
             label='Password'
+            dataCy={ `${dataCy}-password` }
           />
           <SignupFieldContainer
             error={ passwordConfirm.error }
@@ -130,19 +134,25 @@ export const Signup: React.FC<IProps> = ({
               value: passwordConfirm.value,
             } }
             label='Confirm Password'
+            dataCy={ `${dataCy}-confirm-password` }
           />
           <ButtonsContainer>
             <Button
               type='button'
               kind='primary'
-              dataCy='signup-cta'
+              dataCy={ `${dataCy}-cta` }
               processing={ processing }
               disabled={ disableSignup() }
               onClick={ onSignupClick }
             >
               Sign Up
             </Button>
-            <AlreadyHaveAcctLink to='/login'>Already have an account?</AlreadyHaveAcctLink>
+            <AlreadyHaveAcctLink
+              to='/login'
+              data-cy={ `${dataCy}-already-have-acct-link` }
+            >
+              Already have an account?
+            </AlreadyHaveAcctLink>
           </ButtonsContainer>
         </SignupForm>
       </SignupFormContainer>
