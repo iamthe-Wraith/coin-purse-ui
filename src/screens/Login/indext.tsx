@@ -5,14 +5,18 @@ import { Screen } from '../Screen';
 
 interface IProps extends IBaseProps {}
 
-const DashboardContainer = styled(Screen)``;
+const LoginContainer = styled(Screen)``;
 
-export const Dashboard: React.FC<IProps> = ({
+export const Login: React.FC<IProps> = ({
   className = '',
+  dataCy = '',
 }) => {
   return (
-    <DashboardContainer className={ className }>
-      temp Dashboard
-    </DashboardContainer>
+    <LoginContainer
+      className={ className }
+      data-cy={ dataCy }
+    >
+      temp Login
+    </LoginContainer>
   );
 };
