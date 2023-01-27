@@ -1,8 +1,13 @@
+import { observer } from 'mobx-react';
 import React, { ChangeEventHandler, FocusEventHandler, useCallback, useState } from 'react';
+import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import { Button } from '../../components/Button';
 import { Card } from '../../components/Card';
+import { ErrorText } from '../../components/ErrorText';
 import { InputField } from '../../components/InputField';
+import { useUserSession } from '../../contexts/user-session';
+import { MainRoutes } from '../../routers/config';
 import { FlexCenter, FlexCol, H1 } from '../../styles';
 import { StyledLink } from '../../styles/components/link';
 import { IBaseProps } from '../../types/fc';
@@ -33,6 +38,11 @@ const ButtonsContainer = styled.div`
   }
 `;
 
+const FormErrorText = styled(ErrorText)`
+  display: block;
+  text-align: center;
+`;
+
 const SignupContainer = styled(Screen)`
   ${FlexCenter}
 `;
@@ -50,16 +60,25 @@ const SignupFormContainer = styled(Card)`
   max-width: 530px;
 `;
 
-export const Signup: React.FC<IProps> = ({
+export const SignupBase: React.FC<IProps> = ({
   className = '',
 }) => {
+  const navigate = useNavigate();
+  const userSession = useUserSession();
   const [email, setEmail] = useState<IFieldValue>({ value: '', error: '' });
   const [password, setPassword] = useState<IFieldValue>({ value: '', error: '' });
   const [passwordConfirm, setPasswordConfirm] = useState<IFieldValue>({ value: '', error: '' });
-  const [processing, setProcessing] = useState(false); // TODO - replace with mobx model busy state
+  const [formError, setFormError] = useState('');
 
   const disableSignup = () => {
-    return !email.value || !!email.error || !password.value || !!password.error || !passwordConfirm.value || !!passwordConfirm.error || password.value !== passwordConfirm.value;
+    return !email.value ||
+      !!email.error ||
+      !password.value ||
+      !!password.error || 
+      !passwordConfirm.value || 
+      !!passwordConfirm.error || 
+      password.value !== passwordConfirm.value ||
+      !!formError;
   };
 
   const onEmailBlur: FocusEventHandler<InnerHTML> = useCallback(() => {
@@ -92,12 +111,16 @@ export const Signup: React.FC<IProps> = ({
     setPasswordConfirm({ value: e.target.value.trim(), error: '' });
   }, []);
 
-  const onSignupClick = useCallback(() => {
-    setProcessing(true);
+  const onSignupClick = useCallback(async () => {
+    if (disableSignup()) return;
 
-    // eslint-disable-next-line no-console
-    console.log('>>>>> signing up', email, password);
-  }, [email, password, passwordConfirm]);
+    try {
+      await userSession.signup(email.value, password.value);
+      navigate(MainRoutes.DASHBOARD);
+    } catch (err: any) {
+      setFormError(err.message as string);
+    }
+  }, [email, password, passwordConfirm, disableSignup]);
 
   return (
     <SignupContainer className={ `${className} signup-screen` } dataCy={ dataCy }>
@@ -136,12 +159,13 @@ export const Signup: React.FC<IProps> = ({
             label='Confirm Password'
             dataCy={ `${dataCy}-confirm-password` }
           />
+          { formError && <FormErrorText>{ formError }</FormErrorText> }
           <ButtonsContainer>
             <Button
               type='button'
               kind='primary'
               dataCy={ `${dataCy}-cta` }
-              processing={ processing }
+              processing={ userSession.loading }
               disabled={ disableSignup() }
               onClick={ onSignupClick }
             >
@@ -159,3 +183,5 @@ export const Signup: React.FC<IProps> = ({
     </SignupContainer>
   );
 };
+
+export const Signup = observer(SignupBase);

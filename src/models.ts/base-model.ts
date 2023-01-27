@@ -45,11 +45,11 @@ export class BaseModel {
       sendRequest: action,
     });
 
-    this._apiBaseUrl = import.meta.env.DEV ? 'http://localhost:3000' : 'https://the-wizards-quest-api.onrender.com';
+    this._apiBaseUrl = import.meta.env.DEV ? 'http://localhost:3000' : 'https://coin-purse.gold';
 
     this._headers = {
       ...this._headers,
-      'Service-Name': 'the-wizards-quest',
+      'Service-Name': 'coin-purse',
     };
     this._setAuthToken();
     this._initClient();
