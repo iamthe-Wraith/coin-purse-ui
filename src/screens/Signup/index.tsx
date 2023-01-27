@@ -11,6 +11,7 @@ import { MainRoutes } from '../../routers/config';
 import { FlexCenter, FlexCol, H1 } from '../../styles';
 import { StyledLink } from '../../styles/components/link';
 import { IBaseProps } from '../../types/fc';
+import { ApiError } from '../../utils/api-error';
 import { validateEmail, validatePassword } from '../../utils/validators';
 import { Screen } from '../Screen';
 
@@ -117,10 +118,25 @@ export const SignupBase: React.FC<IProps> = ({
     try {
       await userSession.signup(email.value, password.value);
       navigate(MainRoutes.DASHBOARD);
-    } catch (err: any) {
-      setFormError(err.message as string);
+    } catch (err: unknown) {
+      if (err instanceof ApiError) {
+        switch (err.field) {
+          case 'email':
+            setEmail({ ...email, error: err.message });
+            break;
+          case 'password':
+            setPassword({ ...password, error: err.message });
+            break;
+          default:
+            setFormError(err.message);
+            break;
+        }
+      } else {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        setFormError((err as any).message);
+      }
     }
-  }, [email, password, passwordConfirm, disableSignup]);
+  }, [email, password, disableSignup]);
 
   return (
     <SignupContainer className={ `${className} signup-screen` } dataCy={ dataCy }>
@@ -159,7 +175,7 @@ export const SignupBase: React.FC<IProps> = ({
             label='Confirm Password'
             dataCy={ `${dataCy}-confirm-password` }
           />
-          { formError && <FormErrorText>{ formError }</FormErrorText> }
+          { formError && <FormErrorText dataCy={ `${dataCy}-form-error` }>{ formError }</FormErrorText> }
           <ButtonsContainer>
             <Button
               type='button'

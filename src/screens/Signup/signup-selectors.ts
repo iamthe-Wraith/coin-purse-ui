@@ -1,5 +1,6 @@
 // import { InputFieldSelectors } from '../../components/InputField/input-field-selectors';
 
+
 const _dataCy = 'signup';
 
 export const container = () => cy.get(`[data-cy=${_dataCy}]`);
@@ -28,6 +29,6 @@ export const confirmPassword = {
   error: () => cy.get(`[data-cy=${_dataCy}-confirm-password-error]`),
 };
 
+export const formError = () => cy.get(`[data-cy=${_dataCy}-form-error]`);
 export const cta = () => cy.get(`[data-cy=${_dataCy}-cta]`);
-
 export const alreadyHaveAccountLink = () => cy.get(`[data-cy=${_dataCy}-already-have-acct-link]`);

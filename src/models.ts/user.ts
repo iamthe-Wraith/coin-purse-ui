@@ -7,16 +7,16 @@ dayjs.extend(utc);
 
 type PrivateFields = '_user';
 
-export enum UserRole {
-  None = 'none',
-  Hero = 'hero',
+export enum UserRoles {
+  Member = 'member',
+  Admin = 'admin',
   God = 'god',
 }
 
 export interface IUser {
   id: string;
   email: string;
-  role: UserRole;
+  role: UserRoles;
   markedForDeletion: boolean;
   createdAt: Date;
   lastModifiedAt: Date;
