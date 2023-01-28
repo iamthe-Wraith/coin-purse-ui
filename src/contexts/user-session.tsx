@@ -1,5 +1,5 @@
 import { createContext, FC, ReactNode, useContext, useRef } from 'react';
-import { UserSession } from '../models.ts/user-session';
+import { UserSession } from '../models/user-session';
 
 interface IProps {
   children: ReactNode;

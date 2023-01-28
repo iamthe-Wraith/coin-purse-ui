@@ -2,7 +2,7 @@ import { observer } from 'mobx-react';
 import { FC, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useUserSession } from '../../contexts/user-session';
-import { UserRoles } from '../../models.ts/user';
+import { UserRoles } from '../../models/user';
 import { MainRoutes } from '../../routers/config';
 import { LoadingScreen } from '../LoadingScreen';
 

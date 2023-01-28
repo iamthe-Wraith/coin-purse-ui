@@ -32,7 +32,7 @@ export class UserSession extends BaseModel {
 
     const result = await this.sendRequest<IAuthResponse>({
       method: 'POST',
-      path: this.buildV1Path('/auth/verify-token'),
+      path: this.buildV1Path('/verify-token'),
     });
 
     if (result.success) {
@@ -50,7 +50,7 @@ export class UserSession extends BaseModel {
     const result = await this.sendRequest<IAuthResponse>({
       data: { email, password },
       method: 'POST',
-      path: this.buildV1Path('/auth/login'),
+      path: this.buildV1Path('/login'),
     });
 
     if (result.success) {

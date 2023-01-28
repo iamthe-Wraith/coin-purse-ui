@@ -1,18 +1,16 @@
-import * as Selectors from '../../src/screens/Signup/signup-selectors';
+import * as Selectors from '../../src/screens/Login/login-selectors';
 import { MainRoutes } from '../../src/routers/config';
 import { getUser } from '../factories/user';
 
-const passwordErrorText = 'Passwords must be at least 8 characters long and container at least 1x capital letter, 1x lowercase letter, 1x number, and 1x of the following special characters: !@#$%^&*()-_';
-
-describe('Sign Up Screen', () => {
+describe('Login Screen', () => {
   beforeEach(() => {
     window.localStorage.clear();
 
-    cy.visit(MainRoutes.SIGNUP);
+    cy.visit(MainRoutes.LOGIN);
   });
 
   context('Form and Validation', () => {
-    it('should show the signup form', () => {
+    it('should show the login form', () => {
       Selectors.container()
         .within(() => {
           Selectors.email.container()
@@ -31,37 +29,29 @@ describe('Sign Up Screen', () => {
               Selectors.password.error().should('not.exist');
             });
   
-          Selectors.confirmPassword.container()
-            .within(() => {
-              Selectors.confirmPassword.label().should('have.text', 'Confirm Password');
-              Selectors.confirmPassword.text().should('not.exist');
-              Selectors.confirmPassword.input();
-              Selectors.confirmPassword.error().should('not.exist');
-            });
-  
           Selectors.formError().should('not.exist');
           Selectors.cta();
-          Selectors.alreadyHaveAccountLink();
+          Selectors.dontHaveAccountLink();
         });
     });
-  
-    it('should disable the signup cta by default', () => {
+
+    it('should disable the login cta by default', () => {
       Selectors.container()
         .within(() => {
           Selectors.cta().should('be.disabled');
         });
     });
-  
-    it('should redirect to /login if already have an account link is clicked', () => {
+
+    it('should redirect to /signup if don\'t have account link is clicked', () => {
       Selectors.container()
         .within(() => {
-          Selectors.alreadyHaveAccountLink().click();
+          Selectors.dontHaveAccountLink().click();
   
-          cy.url().should('include', MainRoutes.LOGIN);
+          cy.url().should('include', MainRoutes.SIGNUP);
         });
     });
-  
-    it('should show an error if no email is entered', () => {
+
+    it('should show a email error if no email is entered', () => {
       const password = 'Password123!';
   
       Selectors.container()
@@ -87,23 +77,13 @@ describe('Sign Up Screen', () => {
   
               Selectors.password.error().should('not.exist');
             });
-  
-          Selectors.confirmPassword.container()
-            .within(() => {
-              Selectors.confirmPassword.input()
-                .focus()
-                .type(password)
-                .blur();
-  
-              Selectors.confirmPassword.error().should('not.exist');
-            });
           // #endregion
   
           Selectors.cta().should('be.disabled');
         });
     });
-  
-    it('should show an error if an invalid email is entered', () => {
+
+    it('should show an email error if an invalid email format is entered', () => {
       const email = 'invalid';
       const password = 'Password123!';
   
@@ -131,23 +111,13 @@ describe('Sign Up Screen', () => {
   
               Selectors.password.error().should('not.exist');
             });
-  
-          Selectors.confirmPassword.container()
-            .within(() => {
-              Selectors.confirmPassword.input()
-                .focus()
-                .type(password)
-                .blur();
-  
-              Selectors.confirmPassword.error().should('not.exist');
-            });
           // #endregion
   
           Selectors.cta().should('be.disabled');
         });
     });
-  
-    it('should show an error if no password is entered', () => {
+
+    it('should show a password error if no password is entered', () => {
       const email = 'test@test.com';
   
       Selectors.container()
@@ -158,101 +128,7 @@ describe('Sign Up Screen', () => {
                 .focus()
                 .blur();
   
-              Selectors.password.error().should('have.text', passwordErrorText);
-            });
-  
-          // #region
-          //
-          // fill out rest of form to test disabled state of cta
-          Selectors.email.container()
-            .within(() => {
-              Selectors.email.input()
-                .focus()
-                .type(email)
-                .blur();
-  
-              Selectors.email.error().should('not.exist');
-            });
-  
-          Selectors.confirmPassword.container()
-            .within(() => {
-              Selectors.confirmPassword.input()
-                .focus()
-                .blur();
-  
-              Selectors.confirmPassword.error().should('not.exist');
-            });
-          // #endregion
-  
-          Selectors.cta().should('be.disabled');
-        });
-    });
-  
-    it('should show an error if an invalid password is entered', () => {
-      const email = 'test@test.com';
-      const password = 'invalid';
-  
-      Selectors.container()
-        .within(() => {
-          Selectors.password.container()
-            .within(() => {
-              Selectors.password.input()
-                .focus()
-                .type(password)
-                .blur();
-  
-              Selectors.password.error().should('have.text', passwordErrorText);
-            });
-  
-          // #region
-          //
-          // fill out rest of form to test disabled state of cta
-          Selectors.email.container()
-            .within(() => {
-              Selectors.email.input()
-                .focus()
-                .type(email)
-                .blur();
-  
-              Selectors.email.error().should('not.exist');
-            });
-  
-          Selectors.confirmPassword.container()
-            .within(() => {
-              Selectors.confirmPassword.input()
-                .focus()
-                .blur();
-  
-              Selectors.confirmPassword.error().should('not.exist');
-            });
-          // #endregion
-  
-          Selectors.cta().should('be.disabled');
-        });
-    });
-  
-    it('should show an error if password and confirmed password do not match', () => {
-      const email = 'test@test.com';
-      const password = 'Password123!';
-  
-      Selectors.container()
-        .within(() => {
-          Selectors.password.container()
-            .within(() => {
-              Selectors.password.input()
-                .focus()
-                .type(password)
-                .blur();
-            });
-  
-          Selectors.confirmPassword.container()
-            .within(() => {
-              Selectors.confirmPassword.input()
-                .focus()
-                .type(`invalid${password}`)
-                .blur();
-  
-              Selectors.confirmPassword.error().should('have.text', 'Passwords do not match.');
+              Selectors.password.error().should('have.text', 'Password is required.');
             });
   
           // #region
@@ -274,15 +150,15 @@ describe('Sign Up Screen', () => {
     });
   });
 
-  context('Signup Requests', () => {
-    it('should allow user to sign up if there are no errors', () => {
+  context('Login Requests', () => {
+    it('should allow user to login if there are no errors', () => {
       const user = getUser();
       const password = 'Password123!';
   
-      cy.intercept('POST', '/api/v1/signup', {
+      cy.intercept('POST', '/api/v1/login', {
         statusCode: 200,
         body: { user }
-      }).as('SignupRequest');
+      }).as('LoginRequest');
   
       Selectors.container()
         .within(() => {
@@ -306,39 +182,28 @@ describe('Sign Up Screen', () => {
               Selectors.password.error().should('not.exist');
             });
   
-          Selectors.confirmPassword.container()
-            .within(() => {
-              Selectors.confirmPassword.input()
-                .focus()
-                .type(password)
-                .blur();
-  
-              Selectors.confirmPassword.error().should('not.exist');
-            });
-  
           Selectors.cta()
             .should('be.enabled')
             .click();
   
-          cy.wait('@SignupRequest');
+          cy.wait('@LoginRequest');
   
           cy.url().should('include', MainRoutes.DASHBOARD);
         });
     });
-  
-    it('should show email error if api returns 409', () => {
+
+    it('should show form error if api returns 401', () => {
       const user = getUser();
       const password = 'Password123!';
       const error = {
-        field: 'email',
-        message: 'email already in use',
-        name: 'Conflict'
+        message: 'invalid email or password.',
+        name: 'Authentication'
       };
   
-      cy.intercept('POST', '/api/v1/signup', {
-        statusCode: 409,
-        body: error
-      }).as('SignupRequest');
+      cy.intercept('POST', '/api/v1/login', {
+        statusCode: 401,
+        body: error,
+      }).as('LoginRequest');
   
       Selectors.container()
         .within(() => {
@@ -362,39 +227,75 @@ describe('Sign Up Screen', () => {
               Selectors.password.error().should('not.exist');
             });
   
-          Selectors.confirmPassword.container()
+          Selectors.cta()
+            .should('be.enabled')
+            .click();
+  
+          cy.wait('@LoginRequest');
+  
+          Selectors.formError()
+            .should('have.text', error.message);
+        });
+    });
+
+    it('should show form error if api returns 422', () => {
+      const user = getUser();
+      const password = 'Password123!';
+      const error = {
+        message: 'request is unprocessable.',
+        name: 'Unprocessable'
+      };
+  
+      cy.intercept('POST', '/api/v1/login', {
+        statusCode: 422,
+        body: error,
+      }).as('LoginRequest');
+  
+      Selectors.container()
+        .within(() => {
+          Selectors.email.container()
             .within(() => {
-              Selectors.confirmPassword.input()
+              Selectors.email.input()
+                .focus()
+                .type(user.email)
+                .blur();
+  
+              Selectors.email.error().should('not.exist');
+            });
+  
+          Selectors.password.container()
+            .within(() => {
+              Selectors.password.input()
                 .focus()
                 .type(password)
                 .blur();
   
-              Selectors.confirmPassword.error().should('not.exist');
+              Selectors.password.error().should('not.exist');
             });
   
           Selectors.cta()
             .should('be.enabled')
             .click();
   
-          cy.wait('@SignupRequest');
+          cy.wait('@LoginRequest');
   
-          Selectors.email.error()
+          Selectors.formError()
             .should('have.text', error.message);
         });
-    });  
+    });
 
     it('should show form error if api returns 500', () => {
       const user = getUser();
       const password = 'Password123!';
       const error = {
-        message: 'something went wrong',
+        message: 'something went wrong.',
         name: 'Server'
       };
   
-      cy.intercept('POST', '/api/v1/signup', {
-        statusCode: 409,
-        body: error
-      }).as('SignupRequest');
+      cy.intercept('POST', '/api/v1/login', {
+        statusCode: 500,
+        body: error,
+      }).as('LoginRequest');
   
       Selectors.container()
         .within(() => {
@@ -418,25 +319,15 @@ describe('Sign Up Screen', () => {
               Selectors.password.error().should('not.exist');
             });
   
-          Selectors.confirmPassword.container()
-            .within(() => {
-              Selectors.confirmPassword.input()
-                .focus()
-                .type(password)
-                .blur();
-  
-              Selectors.confirmPassword.error().should('not.exist');
-            });
-  
           Selectors.cta()
             .should('be.enabled')
             .click();
   
-          cy.wait('@SignupRequest');
+          cy.wait('@LoginRequest');
   
           Selectors.formError()
             .should('have.text', error.message);
         });
-    }); 
+    });
   });
 });
