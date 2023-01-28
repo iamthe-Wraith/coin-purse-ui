@@ -1,4 +1,3 @@
-import { observer } from 'mobx-react';
 import React, { ChangeEventHandler, FocusEventHandler, useCallback, useState } from 'react';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
@@ -12,10 +11,10 @@ import { FlexCenter, FlexCol, H1 } from '../../styles';
 import { StyledLink } from '../../styles/components/link';
 import { IBaseProps } from '../../types/fc';
 import { ApiError } from '../../utils/api-error';
-import { validateEmail, validatePassword } from '../../utils/validators';
+import { validateEmail } from '../../utils/validators';
 import { Screen } from '../Screen';
 
-const dataCy = 'signup';
+const dataCy = 'login';
 
 interface IProps extends IBaseProps {}
 
@@ -23,12 +22,6 @@ interface IFieldValue {
   value: string;
   error: string;
 }
-
-const AlreadyHaveAcctLink = styled(StyledLink)`
-  display: block;
-  margin-top: 12px;
-  font-size: 0.8rem;
-`;
 
 const ButtonsContainer = styled.div`
   ${FlexCol}
@@ -39,46 +32,48 @@ const ButtonsContainer = styled.div`
   }
 `;
 
+const DontHaveAcctLink = styled(StyledLink)`
+  display: block;
+  margin-top: 12px;
+  font-size: 0.8rem;
+`;
+
 const FormErrorText = styled(ErrorText)`
   display: block;
   text-align: center;
 `;
 
-const SignupContainer = styled(Screen)`
+const LoginContainer = styled(Screen)`
   ${FlexCenter}
 `;
 
-const SignupFieldContainer = styled(InputField)`
+const LoginFieldContainer = styled(InputField)`
   margin-bottom: 12px;
 `;
 
-const SignupForm = styled.form`
+const LoginForm = styled.form`
   margin-top: 12px;
 `;
 
-const SignupFormContainer = styled(Card)`
+const LoginFormContainer = styled(Card)`
   width: 94vw;
   max-width: 530px;
 `;
 
-export const SignupBase: React.FC<IProps> = ({
+export const Login: React.FC<IProps> = ({
   className = '',
 }) => {
   const navigate = useNavigate();
   const userSession = useUserSession();
   const [email, setEmail] = useState<IFieldValue>({ value: '', error: '' });
   const [password, setPassword] = useState<IFieldValue>({ value: '', error: '' });
-  const [passwordConfirm, setPasswordConfirm] = useState<IFieldValue>({ value: '', error: '' });
   const [formError, setFormError] = useState('');
-
-  const disableSignup = () => {
+  
+  const disableLogin = () => {
     return !email.value ||
       !!email.error ||
       !password.value ||
       !!password.error || 
-      !passwordConfirm.value || 
-      !!passwordConfirm.error || 
-      password.value !== passwordConfirm.value ||
       !!formError;
   };
 
@@ -93,7 +88,8 @@ export const SignupBase: React.FC<IProps> = ({
   }, []);
 
   const onPasswordBlur: FocusEventHandler<HTMLInputElement> = useCallback(() => {
-    const { error } = validatePassword(password.value);
+    let error = '';
+    if (!password.value) error = 'Password is required.';
     setPassword({ ...password, error });
   }, [password]);
 
@@ -102,24 +98,11 @@ export const SignupBase: React.FC<IProps> = ({
     setPassword({ value: e.target.value.trim(), error: '' });
   }, []);
 
-  const onPasswordConfirmBlur: FocusEventHandler<HTMLInputElement> = useCallback(() => {
-    let error = '';
-
-    if (password.value !== passwordConfirm.value) error = 'Passwords do not match.';
-
-    setPasswordConfirm({ ...passwordConfirm, error });
-  }, [password, passwordConfirm]);
-
-  const onPasswordConfirmChange: ChangeEventHandler<HTMLInputElement> = useCallback((e) => {
-    setFormError('');
-    setPasswordConfirm({ value: e.target.value.trim(), error: '' });
-  }, []);
-
-  const onSignupClick = useCallback(async () => {
-    if (disableSignup()) return;
+  const onLoginClick = useCallback(async () => {
+    if (disableLogin()) return;
 
     try {
-      await userSession.signup(email.value, password.value);
+      await userSession.login(email.value, password.value);
       navigate(MainRoutes.DASHBOARD);
     } catch (err: unknown) {
       if (err instanceof ApiError) {
@@ -139,14 +122,17 @@ export const SignupBase: React.FC<IProps> = ({
         setFormError((err as any).message);
       }
     }
-  }, [email, password, disableSignup]);
+  }, [email, password, disableLogin]);
 
   return (
-    <SignupContainer className={ `${className} signup-screen` } dataCy={ dataCy }>
-      <SignupFormContainer>
-        <H1>Sign Up for Coin Purse</H1>
-        <SignupForm>
-          <SignupFieldContainer
+    <LoginContainer
+      className={ className }
+      dataCy={ dataCy }
+    >
+      <LoginFormContainer>
+        <H1>Login</H1>
+        <LoginForm>
+          <LoginFieldContainer
             error={ email.error }
             inputProps={ {
               onBlur: onEmailBlur,
@@ -156,7 +142,7 @@ export const SignupBase: React.FC<IProps> = ({
             label='Email'
             dataCy={ `${dataCy}-email` }
           />
-          <SignupFieldContainer
+          <LoginFieldContainer
             error={ password.error }
             inputProps={ {
               onBlur: onPasswordBlur,
@@ -167,17 +153,6 @@ export const SignupBase: React.FC<IProps> = ({
             label='Password'
             dataCy={ `${dataCy}-password` }
           />
-          <SignupFieldContainer
-            error={ passwordConfirm.error }
-            inputProps={ {
-              onBlur: onPasswordConfirmBlur,
-              onChange: onPasswordConfirmChange,
-              type: 'password',
-              value: passwordConfirm.value,
-            } }
-            label='Confirm Password'
-            dataCy={ `${dataCy}-confirm-password` }
-          />
           { formError && <FormErrorText dataCy={ `${dataCy}-form-error` }>{ formError }</FormErrorText> }
           <ButtonsContainer>
             <Button
@@ -185,22 +160,20 @@ export const SignupBase: React.FC<IProps> = ({
               kind='primary'
               dataCy={ `${dataCy}-cta` }
               processing={ userSession.busy }
-              disabled={ disableSignup() }
-              onClick={ onSignupClick }
+              disabled={ disableLogin() }
+              onClick={ onLoginClick }
             >
-              Sign Up
+              Login
             </Button>
-            <AlreadyHaveAcctLink
-              to='/login'
-              data-cy={ `${dataCy}-already-have-acct-link` }
+            <DontHaveAcctLink
+              to='/signup'
+              data-cy={ `${dataCy}-dont-have-acct-link` }
             >
-              Already have an account?
-            </AlreadyHaveAcctLink>
+              Don't have an account?
+            </DontHaveAcctLink>
           </ButtonsContainer>
-        </SignupForm>
-      </SignupFormContainer>
-    </SignupContainer>
+        </LoginForm>
+      </LoginFormContainer>
+    </LoginContainer>
   );
 };
-
-export const Signup = observer(SignupBase);

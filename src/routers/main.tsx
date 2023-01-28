@@ -3,7 +3,7 @@ import { Route, Routes, useLocation, useNavigate } from 'react-router';
 import { useUserSession } from '../contexts/user-session';
 import { ComingSoon } from '../screens/ComingSoon';
 import { Dashboard } from '../screens/Dashboard';
-import { Login } from '../screens/Login/indext';
+import { Login } from '../screens/Login';
 import { PrivateScreen } from '../screens/PrivateScreen';
 import { Signup } from '../screens/Signup';
 import { MainRoutes } from './config';

@@ -1,6 +1,6 @@
 import { MainRoutes } from '../../src/routers/config';
 import * as SignupSelectors from '../../src/screens/Signup/signup-selectors';
-import { getUser } from './factories/user';
+import { getUser } from '../factories/user';
 
 describe('Private Page', () => {
   beforeEach(() => {
