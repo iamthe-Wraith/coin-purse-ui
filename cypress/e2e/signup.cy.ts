@@ -383,6 +383,120 @@ describe('Sign Up Screen', () => {
         });
     });  
 
+    it('should show email error if api returns 422 due to invalid email format', () => {
+      const user = getUser();
+      const password = 'Password123!';
+      const error = {
+        field: 'email',
+        message: 'invalid email format.',
+        name: 'Unprocessible'
+      };
+  
+      cy.intercept('POST', '/api/v1/signup', {
+        statusCode: 422,
+        body: error
+      }).as('SignupRequest');
+  
+      Selectors.container()
+        .within(() => {
+          Selectors.email.container()
+            .within(() => {
+              Selectors.email.input()
+                .focus()
+                .type(user.email)
+                .blur();
+  
+              Selectors.email.error().should('not.exist');
+            });
+  
+          Selectors.password.container()
+            .within(() => {
+              Selectors.password.input()
+                .focus()
+                .type(password)
+                .blur();
+  
+              Selectors.password.error().should('not.exist');
+            });
+  
+          Selectors.confirmPassword.container()
+            .within(() => {
+              Selectors.confirmPassword.input()
+                .focus()
+                .type(password)
+                .blur();
+  
+              Selectors.confirmPassword.error().should('not.exist');
+            });
+  
+          Selectors.cta()
+            .should('be.enabled')
+            .click();
+  
+          cy.wait('@SignupRequest');
+  
+          Selectors.email.error()
+            .should('have.text', error.message);
+        });
+    });  
+
+    it('should show email error if api returns 422 due to invalid password format', () => {
+      const user = getUser();
+      const password = 'Password123!';
+      const error = {
+        field: 'password',
+        message: passwordErrorText,
+        name: 'Unprocessible'
+      };
+  
+      cy.intercept('POST', '/api/v1/signup', {
+        statusCode: 422,
+        body: error
+      }).as('SignupRequest');
+  
+      Selectors.container()
+        .within(() => {
+          Selectors.email.container()
+            .within(() => {
+              Selectors.email.input()
+                .focus()
+                .type(user.email)
+                .blur();
+  
+              Selectors.email.error().should('not.exist');
+            });
+  
+          Selectors.password.container()
+            .within(() => {
+              Selectors.password.input()
+                .focus()
+                .type(password)
+                .blur();
+  
+              Selectors.password.error().should('not.exist');
+            });
+  
+          Selectors.confirmPassword.container()
+            .within(() => {
+              Selectors.confirmPassword.input()
+                .focus()
+                .type(password)
+                .blur();
+  
+              Selectors.confirmPassword.error().should('not.exist');
+            });
+  
+          Selectors.cta()
+            .should('be.enabled')
+            .click();
+  
+          cy.wait('@SignupRequest');
+  
+          Selectors.password.error()
+            .should('have.text', error.message);
+        });
+    });  
+
     it('should show form error if api returns 500', () => {
       const user = getUser();
       const password = 'Password123!';
