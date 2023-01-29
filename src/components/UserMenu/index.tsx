@@ -8,6 +8,8 @@ import { Link } from 'react-router-dom';
 import { FlexCol } from '../../styles';
 import { MainRoutes } from '../../routers/config';
 
+
+
 interface IProps extends IBaseProps {}
 
 const Menu = styled.div`
@@ -65,16 +67,31 @@ const UserMenuContainer = styled.div`
 
 export const UserMenu: React.FC<IProps> = ({
   className = '',
-  dataCy = '',
+  dataCy = 'user-menu',
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const renderMenu = () => {
     return (
-      <Menu>
-        <MenuLink to={ MainRoutes.PROFILE_SETTINGS }>Profile Settings</MenuLink>
-        <MenuLink to={ MainRoutes.INCOME_CONFIG }>Income Configurations</MenuLink>
-        <MenuLink to={ MainRoutes.BILLS_CONFIG }>Bills Configurations</MenuLink>
+      <Menu data-cy={ `${dataCy}-popover` }>
+        <MenuLink
+          to={ MainRoutes.PROFILE_SETTINGS }
+          data-cy={ `${dataCy}-profile` }
+        >
+          Profile Settings
+        </MenuLink>
+        <MenuLink
+          to={ MainRoutes.INCOME_CONFIG }
+          data-cy={ `${dataCy}-income-config` }
+        >
+          Income Configurations
+        </MenuLink>
+        <MenuLink
+          to={ MainRoutes.BILLS_CONFIG }
+          data-cy={ `${dataCy}-bills-config` }
+        >
+          Bills Configurations
+        </MenuLink>
       </Menu>
     );
   };
@@ -97,6 +114,7 @@ export const UserMenu: React.FC<IProps> = ({
         <Trigger
           className={ isOpen ? 'open' : '' }
           onClick={ toggleMenu }
+          data-cy={ `${dataCy}-trigger` }
         >
           <DefaultAvatar />
         </Trigger>

@@ -9,7 +9,7 @@ interface IProps extends IBaseProps {
 
 export const Chart: React.FC<IProps> = ({
   className = '',
-  dataCy = '',
+  dataCy = 'chart-icon',
   fill = theme.colors.neutral[100],
 }) => {
   return (

@@ -44,7 +44,7 @@ const MainNavContainer = styled.nav`
 
 export const MainNav: React.FC<IProps> = ({
   className = '',
-  dataCy = '',
+  dataCy = 'main-nav',
 }) => {
   const location = useLocation();
 
@@ -57,18 +57,21 @@ export const MainNav: React.FC<IProps> = ({
         <LogoLink
           className={ location.pathname.includes(MainRoutes.DASHBOARD) ? 'selected' : '' }
           to={ MainRoutes.DASHBOARD }
+          data-cy={ `${dataCy}-logo-link` }
         >
           CP
         </LogoLink>
         <NavItem
           text='Pay Bills'
           to={ MainRoutes.PAY_BILLS }
+          dataCy={ `${dataCy}-pay-bills` }
         >
           <DollarSign fill={ location.pathname.includes(MainRoutes.PAY_BILLS) ? theme.colors.primary[400] : theme.colors.neutral[100] } />
         </NavItem>
         <NavItem
           text='Reports'
           to={ MainRoutes.REPORTS }
+          dataCy={ `${dataCy}-reports` }
         >
           <Chart fill={ location.pathname.includes(MainRoutes.REPORTS) ? theme.colors.primary[400] : theme.colors.neutral[100] } />
         </NavItem>

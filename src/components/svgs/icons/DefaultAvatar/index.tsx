@@ -10,7 +10,7 @@ interface IProps extends IBaseProps {
 
 export const DefaultAvatar: React.FC<IProps> = ({
   className = '',
-  dataCy = '',
+  dataCy = 'default-avatar-icon',
   fill = theme.colors.neutral[100],
 }) => {
   return (

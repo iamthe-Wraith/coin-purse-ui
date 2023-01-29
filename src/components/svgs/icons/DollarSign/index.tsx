@@ -3,15 +3,13 @@ import { theme } from '../../../../styles/theme';
 import { IBaseProps } from '../../../../types/fc';
 import { SvgIcon } from '../SvgIcon';
 
-
 interface IProps extends IBaseProps {
   fill?: string;
-  animated?: boolean;
 }
 
 export const DollarSign: React.FC<IProps> = ({
   className = '',
-  dataCy = '',
+  dataCy = 'dollar-sign-icon',
   fill = theme.colors.neutral[100],
 }) => {
   return (

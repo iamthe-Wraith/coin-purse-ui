@@ -19,7 +19,7 @@ const SpinnerSvg = styled(SvgIcon)`
 
 export const Spinner: React.FC<IProps> = ({
   className = '',
-  dataCy = '',
+  dataCy = 'spinner-icon',
   fill = theme.colors.neutral[100],
   animated,
 }) => {
