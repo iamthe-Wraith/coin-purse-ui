@@ -142,7 +142,11 @@ export const SignupBase: React.FC<IProps> = ({
   }, [email, password, disableSignup]);
 
   return (
-    <SignupContainer className={ `${className} signup-screen` } dataCy={ dataCy }>
+    <SignupContainer
+      hideNav
+      className={ `${className}
+      signup-screen` } dataCy={ dataCy }
+    >
       <SignupFormContainer>
         <H1>Sign Up for Coin Purse</H1>
         <SignupForm>
