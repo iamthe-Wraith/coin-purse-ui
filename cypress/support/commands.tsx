@@ -4,6 +4,8 @@
 import { mount } from 'cypress/react18';
 import { ReactNode } from 'react';
 import { BrowserRouter } from 'react-router-dom';
+import { generateId } from '../../src/utils/generators';
+import { getUser } from '../factories/user';
 
 // ***********************************************
 // This example commands.ts shows you how to
@@ -34,11 +36,23 @@ import { BrowserRouter } from 'react-router-dom';
 declare global {
   namespace Cypress {
     interface Chainable {
+      login(): void;
       mount: typeof mount;
       mountWithRouter(component: ReactNode, options?: any): Chainable<void>
     }
   }
 }
+
+Cypress.Commands.add('login', () => {
+  const user = getUser();
+  const token = generateId({ count: 24 });
+  window.localStorage.setItem('token', token);
+
+  cy.intercept('POST', '/api/v1/verify-token', {
+    statusCode: 200,
+    body: { user }
+  }).as('LoginRequest');
+});
 
 Cypress.Commands.add('mountWithRouter', (component: ReactNode, options: any = {}) => {
   const { routerProps = { initialEntries: ['/'] }, ...mountOptions } = options;

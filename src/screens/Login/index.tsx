@@ -126,6 +126,7 @@ export const Login: React.FC<IProps> = ({
 
   return (
     <LoginContainer
+      hideNav
       className={ className }
       dataCy={ dataCy }
     >
