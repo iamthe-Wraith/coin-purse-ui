@@ -13,11 +13,18 @@ export enum UserRoles {
   God = 'god',
 }
 
+export enum UserStatus {
+  Active = 'active',
+  Locked = 'locked',
+  Banned = 'banned',
+}
+
 export interface IUser {
   id: string;
   email: string;
   role: UserRoles;
   markedForDeletion: boolean;
+  status: UserStatus;
   createdAt: Date;
   lastModifiedAt: Date;
 }
