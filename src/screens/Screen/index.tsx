@@ -37,7 +37,7 @@ export const Screen: React.FC<IProps> = ({
   return (
     <ScreenContainer className={ className } data-cy={ dataCy }>
       { !hideNav && <MainNav /> }
-      <MainContainer className={ hideNav ? 'hide-nav' : '' }>
+      <MainContainer className={ `main-container ${hideNav ? 'hide-nav' : ''}` }>
         { children }
       </MainContainer>
     </ScreenContainer>

@@ -44,7 +44,9 @@ const FormErrorText = styled(ErrorText)`
 `;
 
 const LoginContainer = styled(Screen)`
-  ${FlexCenter}
+  .main-container {
+    ${FlexCenter}
+  }
 `;
 
 const LoginFieldContainer = styled(InputField)`

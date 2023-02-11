@@ -45,7 +45,9 @@ const FormErrorText = styled(ErrorText)`
 `;
 
 const SignupContainer = styled(Screen)`
-  ${FlexCenter}
+  .main-container {
+    ${FlexCenter}
+  }
 `;
 
 const SignupFieldContainer = styled(InputField)`
